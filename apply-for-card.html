@@ -116,5 +116,67 @@
         <p>&copy; 2025 SecureBank. All rights reserved.</p>
     </footer>
     <script src="js/main.js"></script>
+    <script>
+    // Logging and Genesys event for time spent and scroll depth
+    let timeSpent = 0;
+    let timerActive = true;
+    let scrollReachedBottom = false;
+    let eventSent = false;
+
+    function log(msg, ...args) {
+        console.log("[GenesysTrack]", msg, ...args);
+    }
+
+    function startTimer() {
+        log("Timer started");
+        return setInterval(() => {
+            if (timerActive) {
+                timeSpent++;
+                log("Time spent incremented:", timeSpent, "seconds");
+            }
+            checkAndSendEvent();
+        }, 1000);
+    }
+
+    document.addEventListener("visibilitychange", function() {
+        timerActive = !document.hidden;
+        log("Visibility changed. Timer active:", timerActive);
+    });
+
+    window.addEventListener("scroll", function() {
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        const docHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        if (scrollTop + windowHeight >= docHeight - 2) {
+            if (!scrollReachedBottom) {
+                log("Scroll depth 100% reached");
+            }
+            scrollReachedBottom = true;
+            checkAndSendEvent();
+        }
+    });
+
+    function checkAndSendEvent() {
+        if (!eventSent && timeSpent >= 30 && scrollReachedBottom && typeof Genesys === "function") {
+            log("Sending Genesys event: timeSpentSeconds =", timeSpent, ", scrollDepth = 100");
+            Genesys("command", "Journey.record", {
+                eventName: "page_engagement",
+                customAttributes: {
+                    timeSpentSeconds: timeSpent,
+                    scrollDepth: 100
+                },
+                traitsMapper: []
+            });
+            eventSent = true;
+            log("Genesys event sent.");
+        }
+    }
+
+    startTimer();
+    </script>
 </body>
 </html>
