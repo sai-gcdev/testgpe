@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Apply for Credit/Debit Cards | SecureBank</title>
+    <title>Apply for Credit/Debit Cards</title>
     <link rel="stylesheet" href="css/styles.css">
     <script type="text/javascript" charset="utf-8">
   (function (g, e, n, es, ys) {
@@ -179,6 +179,43 @@
     }
 
     startTimer();
+
+    // --- Search Event Tracking ---
+    function sendSearchEvent(searchTerm) {
+        if (typeof Genesys === "function") {
+            log("Sending Genesys search event with searchTerm:", searchTerm);
+            Genesys("command", "Journey.record", {
+                eventName: "card_search",
+                customAttributes: {
+                    searchTerm: searchTerm
+                },
+                traitsMapper: []
+            });
+            log("Genesys search event sent.");
+        } else {
+            log("Genesys not available, search event not sent.");
+        }
+    }
+
+    document.getElementById("search-btn").addEventListener("click", function() {
+        const searchTerm = document.getElementById("card-search").value.trim();
+        log("Search button clicked. Search term:", searchTerm);
+        if (searchTerm) {
+            sendSearchEvent(searchTerm);
+        }
+    });
+
+    document.getElementById("card-search").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            const searchTerm = this.value.trim();
+            log("Search input Enter pressed. Search term:", searchTerm);
+            if (searchTerm) {
+                sendSearchEvent(searchTerm);
+            }
+        }
+    });
+    // --- End Search Event Tracking ---
     </script>
 </body>
 </html>
