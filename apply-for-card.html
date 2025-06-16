@@ -167,7 +167,9 @@
                 eventName: "page_engagement",
                 customAttributes: {
                     timeSpentSeconds: timeSpent,
-                    scrollDepth: 100
+                    scrollDepth: 100,
+                    pageUrl: window.location.href,
+                    pageTitle: document.title
                 },
                 traitsMapper: []
             });
