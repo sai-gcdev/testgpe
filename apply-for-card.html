@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply for Credit/Debit Cards | SecureBank</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Apply for Credit & Debit Cards</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="apply-for-card.html">Apply for Card</a>
+            <a href="insurance-listing.html">Insurance</a>
+            <a href="quote-request.html">Request Quote</a>
+            <a href="contact.html">Contact</a>
+            <a href="about-us.html">About Us</a>
+        </nav>
+    </header>
+    <main>
+        <div class="search-bar">
+            <input type="text" id="card-search" placeholder="Search cards...">
+            <button id="search-btn">Search</button>
+        </div>
+        <section class="product-category">
+            <h2>Credit Cards</h2>
+            <div class="product-card">
+                <img src="images/Platinum Rewards Credit Card.png" alt="Platinum Rewards Credit Card" class="card-thumb">
+                <h3>Platinum Rewards Credit Card</h3>
+                <p>Earn reward points on every purchase, with exclusive dining and travel offers.</p>
+                <button class="view-details-btn" data-product="platinum-rewards">View Details</button>
+            </div>
+            <div class="product-card">
+                <img src="images/Cashback Credit Card.png" alt="Cashback Credit Card" class="card-thumb">
+                <h3>Cashback Credit Card</h3>
+                <p>Get instant cashback on groceries, fuel, and online shopping.</p>
+                <button class="view-details-btn" data-product="cashback">View Details</button>
+            </div>
+            <div class="product-card">
+                <img src="images/Travel Elite Credit Card.png" alt="Travel Elite Credit Card" class="card-thumb">
+                <h3>Travel Elite Credit Card</h3>
+                <p>Perfect for frequent travelers with free travel insurance and global lounge access.</p>
+                <button class="view-details-btn" data-product="travel-elite">View Details</button>
+            </div>
+        </section>
+        <section class="product-category">
+            <h2>Debit Cards</h2>
+            <div class="product-card">
+                <img src="images/Classic Debit Card.png" alt="Classic Debit Card" class="card-thumb">
+                <h3>Classic Debit Card</h3>
+                <p>Easy access to your savings with global ATM withdrawals and contactless payments.</p>
+                <button class="view-details-btn" data-product="classic-debit">View Details</button>
+            </div>
+            <div class="product-card">
+                <img src="images/Premium Debit Card.png" alt="Premium Debit Card" class="card-thumb">
+                <h3>Premium Debit Card</h3>
+                <p>Enjoy higher withdrawal limits and exclusive shopping discounts.</p>
+                <button class="view-details-btn" data-product="premium-debit">View Details</button>
+            </div>
+            <div class="product-card">
+                <img src="images/Youth Debit Card.png" alt="Youth Debit Card" class="card-thumb">
+                <h3>Youth Debit Card</h3>
+                <p>Specially designed for students and young adults with zero annual fees.</p>
+                <button class="view-details-btn" data-product="youth-debit">View Details</button>
+            </div>
+        </section>
+        <section>
+            <h2>Apply Now</h2>
+            <form id="card-application-form">
+                <label for="card-type">Select Card Type:</label>
+                <select id="card-type" name="card-type" required>
+                    <option value="">--Select--</option>
+                    <option value="Platinum Rewards Credit Card">Platinum Rewards Credit Card</option>
+                    <option value="Cashback Credit Card">Cashback Credit Card</option>
+                    <option value="Travel Elite Credit Card">Travel Elite Credit Card</option>
+                    <option value="Classic Debit Card">Classic Debit Card</option>
+                    <option value="Premium Debit Card">Premium Debit Card</option>
+                    <option value="Youth Debit Card">Youth Debit Card</option>
+                </select>
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="fullname" name="fullname" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="submit">Submit Application</button>
+            </form>
+            <div id="confirmation-message" style="display:none;">
+                <p>Thank you for applying! We have received your application and will contact you soon.</p>
+            </div>
+        </section>
+        <!-- Modal Structure -->
+        <div id="product-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <img id="modal-img" src="" alt="" class="modal-img">
+                <h3 id="modal-title"></h3>
+                <p id="modal-desc"></p>
+                <ul id="modal-features"></ul>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 SecureBank. All rights reserved.</p>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>
