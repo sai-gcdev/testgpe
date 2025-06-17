@@ -5,20 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banking and Insurance Services</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f9fa;
+            margin: 0;
+            color: #222;
+        }
+        header {
+            background: #003366;
+            color: #fff;
+            padding: 2rem 0 1rem 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            gap: 0.5rem;
+        }
+        .search-bar input[type="text"] {
+            padding: 0.7rem 1rem;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            width: 320px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            padding: 0.7rem 1.5rem;
+            background: #003366;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-bar button:hover {
+            background: #00509e;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem 1rem;
+        }
+        section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+        }
+        section h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+        .service-list {
+            margin: 1rem 0 0 0;
+            padding: 0 0 0 1.2rem;
+        }
+        .service-list li {
+            margin-bottom: 0.5rem;
+        }
+        .highlight {
+            background: #fffae6;
+            border-left: 4px solid #ffcc00;
+            padding: 0.5rem 1rem;
+            margin: 1rem 0;
+        }
+        footer {
+            background: #003366;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        @media (max-width: 600px) {
+            main { padding: 1rem 0.5rem; }
+            .search-bar input[type="text"] { width: 100%; }
+            section { padding: 1rem; }
+        }
+    </style>
     <script type="text/javascript" charset="utf-8">
-  (function (g, e, n, es, ys) {
-    g['_genesysJs'] = e;
-    g[e] = g[e] || function () {
-      (g[e].q = g[e].q || []).push(arguments)
-    };
-    g[e].t = 1 * new Date();
-    g[e].c = es;
-    ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
-  })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
-    environment: 'prod-usw2',
-    deploymentId: 'b34c2f46-402b-4253-857c-528df9cb20c3'
-  });
-</script>
+      (function (g, e, n, es, ys) {
+        g['_genesysJs'] = e;
+        g[e] = g[e] || function () {
+          (g[e].q = g[e].q || []).push(arguments)
+        };
+        g[e].t = 1 * new Date();
+        g[e].c = es;
+        ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+      })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+        environment: 'prod-usw2',
+        deploymentId: 'b34c2f46-402b-4253-857c-528df9cb20c3'
+      });
+    </script>
 </head>
 <body>
     <header>
@@ -34,19 +137,175 @@
             </ul>
         </nav>
     </header>
+    <div class="search-bar">
+        <input type="text" id="main-search" placeholder="Search for loans, insurance, credit cards, accounts, investments, support...">
+        <button id="main-search-btn">Search</button>
+    </div>
     <main>
-        <section>
-            <h2>Our Services</h2>
-            <p>We offer a wide range of banking and insurance services tailored to meet your needs.</p>
-            <h3>Banking Services</h3>
-            <p>From personal accounts to loans, we provide comprehensive banking solutions.</p>
-            <h3>Insurance Services</h3>
-            <p>Explore our various insurance products to protect what matters most to you.</p>
+        <section id="loan-section">
+            <h2>Loans</h2>
+            <div class="highlight">Get the best deals on home, personal, car, and education loans. Use our EMI calculator and check your eligibility instantly!</div>
+            <ul class="service-list">
+                <li><strong>Home Loan:</strong> Attractive interest rates, flexible tenure, and quick approval for your dream home.</li>
+                <li><strong>Personal Loan:</strong> For your personal needs, with minimal documentation and fast disbursal.</li>
+                <li><strong>Car Loan:</strong> Drive home your dream car with our easy car loan options.</li>
+                <li><strong>Education Loan:</strong> Invest in your future with our education loans for students.</li>
+                <li><strong>EMI Calculator:</strong> Plan your repayments with our easy-to-use EMI calculator.</li>
+                <li><strong>Pre-approved Loans:</strong> Check if you are eligible for instant pre-approved loans.</li>
+                <li><strong>Loan Repayment:</strong> Multiple repayment options and online management.</li>
+            </ul>
+        </section>
+        <section id="insurance-section">
+            <h2>Insurance</h2>
+            <div class="highlight">Protect yourself and your loved ones with our comprehensive insurance plans. Hassle-free policy renewal and claim process.</div>
+            <ul class="service-list">
+                <li><strong>Car Insurance:</strong> Secure your vehicle with our all-inclusive car insurance policies.</li>
+                <li><strong>Health Insurance:</strong> Cover medical expenses for you and your family.</li>
+                <li><strong>Life Insurance:</strong> Ensure your family's financial security with our life insurance plans.</li>
+                <li><strong>Term Insurance:</strong> High coverage at affordable premiums.</li>
+                <li><strong>Policy Renewal:</strong> Renew your policy online in just a few clicks.</li>
+                <li><strong>Insurance Claim:</strong> Easy and transparent claim settlement process.</li>
+            </ul>
+        </section>
+        <section id="credit-card-section">
+            <h2>Credit Cards</h2>
+            <div class="highlight">Choose from a range of credit cards with exclusive benefits, cashback, and travel rewards. Apply online in minutes!</div>
+            <ul class="service-list">
+                <li><strong>Apply Credit Card:</strong> Simple online application and instant approval.</li>
+                <li><strong>Card Benefits:</strong> Enjoy cashback, reward points, and exclusive offers.</li>
+                <li><strong>Low Interest Card:</strong> Save more with our low interest credit cards.</li>
+                <li><strong>Travel Card:</strong> Perfect for frequent travelers with global acceptance.</li>
+                <li><strong>Business Credit Card:</strong> Manage your business expenses efficiently.</li>
+            </ul>
+        </section>
+        <section id="account-section">
+            <h2>Accounts</h2>
+            <div class="highlight">Open a savings or current account with us and enjoy seamless banking. Zero balance and joint account options available.</div>
+            <ul class="service-list">
+                <li><strong>Savings Account:</strong> Earn attractive interest rates with easy access to your funds.</li>
+                <li><strong>Zero Balance Account:</strong> No minimum balance requirement.</li>
+                <li><strong>Current Account:</strong> Tailored for businesses and professionals.</li>
+                <li><strong>Joint Account:</strong> Manage finances together with your family.</li>
+                <li><strong>Account Opening:</strong> Quick and paperless account opening process.</li>
+            </ul>
+        </section>
+        <section id="investment-section">
+            <h2>Investments</h2>
+            <div class="highlight">Grow your wealth with our investment options. Choose from fixed deposits, mutual funds, and more.</div>
+            <ul class="service-list">
+                <li><strong>Fixed Deposit (FD):</strong> Guaranteed returns with flexible tenure.</li>
+                <li><strong>Mutual Funds:</strong> Diversify your portfolio with expert-managed funds.</li>
+                <li><strong>SIP (Systematic Investment Plan):</strong> Invest small amounts regularly for long-term growth.</li>
+                <li><strong>Recurring Deposit:</strong> Save monthly and earn attractive interest.</li>
+                <li><strong>ROI Calculator:</strong> Estimate your returns easily.</li>
+            </ul>
+        </section>
+        <section id="support-section">
+            <h2>Support</h2>
+            <div class="highlight">Need help? Our customer care team is here for you 24/7. Raise complaints, resolve disputes, or reset your password easily.</div>
+            <ul class="service-list">
+                <li><strong>Customer Care:</strong> Reach us anytime for assistance.</li>
+                <li><strong>Complaint/Dispute:</strong> Register your issues and get quick resolutions.</li>
+                <li><strong>Forgot PIN/Reset Password:</strong> Secure and easy recovery options.</li>
+            </ul>
         </section>
     </main>
     <footer>
-        <p>&copy; 2023 Banking and Insurance Services. All rights reserved.</p>
+        <p>&copy; 2025 Banking and Insurance Services. All rights reserved.</p>
     </footer>
-    <script src="js/main.js"></script>
+    <script>
+    // --- Section Keywords Mapping ---
+    const sectionKeywords = {
+        loan: [
+            "loan", "home loan", "personal loan", "car loan", "education loan", "apply loan", "loan interest", 
+            "loan eligibility", "emi", "emi calculator", "loan repayment", "pre-approved loan"
+        ],
+        insurance: [
+            "insurance", "car insurance", "health insurance", "life insurance", "term insurance", 
+            "buy insurance", "policy", "renew policy", "insurance claim", "policy details"
+        ],
+        credit_card: [
+            "credit card", "apply credit card", "card benefits", "cashback card", "low interest card", 
+            "travel card", "business credit card"
+        ],
+        account: [
+            "savings account", "open account", "zero balance account", "current account", "joint account", 
+            "account opening", "minimum balance"
+        ],
+        investment: [
+            "fixed deposit", "fd", "investment", "mutual fund", "sip", "returns", "recurring deposit", "roi"
+        ],
+        support: [
+            "support", "customer care", "complaint", "issue", "dispute", "forgot pin", "reset password"
+        ]
+    };
+
+    const sectionIdMap = {
+        loan: "loan-section",
+        insurance: "insurance-section",
+        credit_card: "credit-card-section",
+        account: "account-section",
+        investment: "investment-section",
+        support: "support-section"
+    };
+
+    function log(msg, ...args) {
+        console.log("[MainSearch]", msg, ...args);
+    }
+
+    function scrollToSection(sectionKey) {
+        const sectionId = sectionIdMap[sectionKey];
+        const section = document.getElementById(sectionId);
+        if (section) {
+            log(`Scrolling to section: ${sectionId}`);
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            log(`Section not found for key: ${sectionKey}`);
+        }
+    }
+
+    function findSectionByKeyword(keyword) {
+        keyword = keyword.toLowerCase();
+        for (const [key, keywords] of Object.entries(sectionKeywords)) {
+            if (keywords.some(k => keyword.includes(k))) {
+                log(`Matched keyword "${keyword}" to section "${key}"`);
+                return key;
+            }
+        }
+        log(`No section matched for keyword: "${keyword}"`);
+        return null;
+    }
+
+    document.getElementById("main-search-btn").addEventListener("click", function() {
+        const searchTerm = document.getElementById("main-search").value.trim().toLowerCase();
+        log("Search button clicked. Search term:", searchTerm);
+        if (searchTerm) {
+            const sectionKey = findSectionByKeyword(searchTerm);
+            if (sectionKey) {
+                scrollToSection(sectionKey);
+            } else {
+                alert("No matching section found for your search.");
+                log("No matching section found for search term:", searchTerm);
+            }
+        }
+    });
+
+    document.getElementById("main-search").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            const searchTerm = this.value.trim().toLowerCase();
+            log("Search input Enter pressed. Search term:", searchTerm);
+            if (searchTerm) {
+                const sectionKey = findSectionByKeyword(searchTerm);
+                if (sectionKey) {
+                    scrollToSection(sectionKey);
+                } else {
+                    alert("No matching section found for your search.");
+                    log("No matching section found for search term:", searchTerm);
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html>
