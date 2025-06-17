@@ -280,7 +280,7 @@
 
     function sendGenesysSearchMilestoneEvent(history) {
         if (typeof Genesys === "function") {
-            const searchString = history.join(", ");
+            const searchString = history.join(",");
             log("Sending Genesys event for 6 searches. searchTerms:", searchString);
             Genesys("command", "Journey.record", {
                 eventName: "six_search_terms_completed",
