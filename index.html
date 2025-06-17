@@ -274,18 +274,50 @@
         setSearchHistory(history);
         log("Search term added to session:", term, "Current history:", history);
         if (history.length === 6) {
-            sendGenesysSearchMilestoneEvent(history);
+            sendSummaryIntentAndGenesysEvent(history);
         }
     }
 
-    function sendGenesysSearchMilestoneEvent(history) {
+    // --- API Call and Genesys Event ---
+    function sendSummaryIntentAndGenesysEvent(history) {
+        const searchString = history.join(",");
+        log("6 search terms reached. Calling summaryIntent API with:", searchString);
+
+        fetch("https://yavoexi0g0.execute-api.us-west-2.amazonaws.com/prod", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ searchTerms: searchString })
+        })
+        .then(response => response.json())
+        .then(data => {
+            log("API response received:", data);
+            let summaryIntent = "";
+            if (data && data.body && data.body.summaryIntent) {
+                summaryIntent = data.body.summaryIntent;
+                log("Extracted summaryIntent:", summaryIntent);
+            } else {
+                log("summaryIntent not found in API response, sending empty value.");
+            }
+            sendGenesysSearchMilestoneEvent(history, summaryIntent);
+        })
+        .catch(error => {
+            log("API call failed:", error);
+            // Still send Genesys event without summaryIntent
+            sendGenesysSearchMilestoneEvent(history, "");
+        });
+    }
+
+    function sendGenesysSearchMilestoneEvent(history, summaryIntent) {
         if (typeof Genesys === "function") {
             const searchString = history.join(",");
-            log("Sending Genesys event for 6 searches. searchTerms:", searchString);
+            log("Sending Genesys event for 6 searches. searchTerms:", searchString, "summaryIntent:", summaryIntent);
             Genesys("command", "Journey.record", {
                 eventName: "six_search_terms_completed",
                 customAttributes: {
-                    searchTerms: searchString
+                    searchTerms: searchString,
+                    summaryIntent: summaryIntent || ""
                 },
                 traitsMapper: []
             });
