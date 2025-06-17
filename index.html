@@ -249,6 +249,52 @@
         support: "support-section"
     };
 
+    // --- Search Tracking for Genesys Event ---
+    function getSearchHistory() {
+        try {
+            const data = sessionStorage.getItem("searchHistory");
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            log("Error reading search history from sessionStorage:", e);
+            return [];
+        }
+    }
+
+    function setSearchHistory(history) {
+        try {
+            sessionStorage.setItem("searchHistory", JSON.stringify(history));
+        } catch (e) {
+            log("Error writing search history to sessionStorage:", e);
+        }
+    }
+
+    function addSearchTerm(term) {
+        let history = getSearchHistory();
+        history.push(term);
+        setSearchHistory(history);
+        log("Search term added to session:", term, "Current history:", history);
+        if (history.length === 6) {
+            sendGenesysSearchMilestoneEvent(history);
+        }
+    }
+
+    function sendGenesysSearchMilestoneEvent(history) {
+        if (typeof Genesys === "function") {
+            const searchString = history.join(", ");
+            log("Sending Genesys event for 6 searches. searchTerms:", searchString);
+            Genesys("command", "Journey.record", {
+                eventName: "six_search_terms_completed",
+                customAttributes: {
+                    searchTerms: searchString
+                },
+                traitsMapper: []
+            });
+            log("Genesys event for 6 searches sent.");
+        } else {
+            log("Genesys not available, 6 searches event not sent.");
+        }
+    }
+
     function log(msg, ...args) {
         console.log("[MainSearch]", msg, ...args);
     }
@@ -276,10 +322,9 @@
         return null;
     }
 
-    document.getElementById("main-search-btn").addEventListener("click", function() {
-        const searchTerm = document.getElementById("main-search").value.trim().toLowerCase();
-        log("Search button clicked. Search term:", searchTerm);
+    function handleSearch(searchTerm) {
         if (searchTerm) {
+            addSearchTerm(searchTerm);
             const sectionKey = findSectionByKeyword(searchTerm);
             if (sectionKey) {
                 scrollToSection(sectionKey);
@@ -288,6 +333,12 @@
                 log("No matching section found for search term:", searchTerm);
             }
         }
+    }
+
+    document.getElementById("main-search-btn").addEventListener("click", function() {
+        const searchTerm = document.getElementById("main-search").value.trim().toLowerCase();
+        log("Search button clicked. Search term:", searchTerm);
+        handleSearch(searchTerm);
     });
 
     document.getElementById("main-search").addEventListener("keydown", function(e) {
@@ -295,17 +346,11 @@
             e.preventDefault();
             const searchTerm = this.value.trim().toLowerCase();
             log("Search input Enter pressed. Search term:", searchTerm);
-            if (searchTerm) {
-                const sectionKey = findSectionByKeyword(searchTerm);
-                if (sectionKey) {
-                    scrollToSection(sectionKey);
-                } else {
-                    alert("No matching section found for your search.");
-                    log("No matching section found for search term:", searchTerm);
-                }
-            }
+            handleSearch(searchTerm);
         }
     });
+
+    // On page load, keep search history in sessionStorage (do not clear)
     </script>
 </body>
 </html>
