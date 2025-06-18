@@ -95,6 +95,10 @@
                 <input type="text" id="fullname" name="fullname" required>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
+                <label for="application-fee">Application Fee:</label>
+                <input type="text" id="application-fee" name="application-fee" value="500" readonly>
+                <label for="coupon-code">Coupon Code:</label>
+                <input type="text" id="coupon-code" name="coupon-code" placeholder="Enter coupon code">
                 <button type="submit">Submit Application</button>
             </form>
             <div id="confirmation-message" style="display:none;">
@@ -132,7 +136,9 @@
         return setInterval(() => {
             if (timerActive) {
                 timeSpent++;
-                log("Time spent incremented:", timeSpent, "seconds");
+                if (timeSpent % 10 === 0) {
+                    log("Time spent incremented:", timeSpent, "seconds");
+                }
             }
             checkAndSendEvent();
         }, 1000);
