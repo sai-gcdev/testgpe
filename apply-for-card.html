@@ -158,27 +158,30 @@
             background: #ffcc00;
             color: #003366;
         }
+        /* Improved form layout */
         form#card-application-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem 2rem;
-            align-items: flex-end;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem 1.5rem;
+            align-items: center;
+            max-width: 650px;
+            margin: 0 auto;
         }
         form#card-application-form label {
-            flex-basis: 180px;
             font-weight: 500;
             color: #003366;
+            margin-bottom: 0.2rem;
+            margin-top: 0.2rem;
         }
         form#card-application-form input,
         form#card-application-form select {
-            flex-basis: 260px;
-            padding: 0.6rem 0.8rem;
+            padding: 0.5rem 0.8rem;
             border: 1px solid #bbb;
             border-radius: 4px;
             font-size: 1rem;
-            margin-bottom: 0.5rem;
             background: #f8fafc;
             transition: border 0.2s;
+            margin-bottom: 0.2rem;
         }
         form#card-application-form input:focus,
         form#card-application-form select:focus {
@@ -195,6 +198,7 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 1rem;
+            grid-column: 1 / span 2;
             transition: background 0.2s, color 0.2s;
             box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
@@ -239,6 +243,9 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.18);
             position: relative;
             animation: fadeIn 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .close-modal {
             position: absolute;
@@ -263,8 +270,9 @@
             section { padding: 1rem 0.5rem; }
             .product-category { flex-direction: column; gap: 0; }
             .product-card { max-width: 100%; min-width: 0; }
-            form#card-application-form label, form#card-application-form input, form#card-application-form select {
-                flex-basis: 100%;
+            form#card-application-form {
+                grid-template-columns: 1fr;
+                gap: 0.7rem 0;
             }
         }
     </style>
@@ -302,19 +310,19 @@
         </div>
         <section class="product-category">
             <h2>Credit Cards</h2>
-            <div class="product-card">
+            <div class="product-card" data-modal="Platinum Rewards Credit Card">
                 <img src="images/Platinum Rewards Credit Card.png" alt="Platinum Rewards Credit Card" class="card-thumb">
                 <h3>Platinum Rewards Credit Card</h3>
                 <p>Earn reward points on every purchase, with exclusive dining and travel offers.</p>
                 <button class="view-details-btn" data-product="Platinum Rewards Credit Card">View Details</button>
             </div>
-            <div class="product-card">
+            <div class="product-card" data-modal="Cashback Credit Card">
                 <img src="images/Cashback Credit Card.png" alt="Cashback Credit Card" class="card-thumb">
                 <h3>Cashback Credit Card</h3>
                 <p>Get instant cashback on groceries, fuel, and online shopping.</p>
                 <button class="view-details-btn" data-product="Cashback Credit Card">View Details</button>
             </div>
-            <div class="product-card">
+            <div class="product-card" data-modal="Travel Elite Credit Card">
                 <img src="images/Travel Elite Credit Card.png" alt="Travel Elite Credit Card" class="card-thumb">
                 <h3>Travel Elite Credit Card</h3>
                 <p>Perfect for frequent travelers with free travel insurance and global lounge access.</p>
@@ -323,19 +331,19 @@
         </section>
         <section class="product-category">
             <h2>Debit Cards</h2>
-            <div class="product-card">
+            <div class="product-card" data-modal="Classic Debit Card">
                 <img src="images/Classic Debit Card.png" alt="Classic Debit Card" class="card-thumb">
                 <h3>Classic Debit Card</h3>
                 <p>Easy access to your savings with global ATM withdrawals and contactless payments.</p>
                 <button class="view-details-btn" data-product="Classic Debit Card">View Details</button>
             </div>
-            <div class="product-card">
+            <div class="product-card" data-modal="Premium Debit Card">
                 <img src="images/Premium Debit Card.png" alt="Premium Debit Card" class="card-thumb">
                 <h3>Premium Debit Card</h3>
                 <p>Enjoy higher withdrawal limits and exclusive shopping discounts.</p>
                 <button class="view-details-btn" data-product="Premium Debit Card">View Details</button>
             </div>
-            <div class="product-card">
+            <div class="product-card" data-modal="Youth Debit Card">
                 <img src="images/Youth Debit Card.png" alt="Youth Debit Card" class="card-thumb">
                 <h3>Youth Debit Card</h3>
                 <p>Specially designed for students and young adults with zero annual fees.</p>
@@ -533,12 +541,116 @@
         }
     }
 
-    // Attach event listeners to all view-details-btn buttons
+    // Attach event listeners to all view-details-btn buttons and handle modal
+    const cardDetails = {
+        "Platinum Rewards Credit Card": {
+            img: "images/Platinum Rewards Credit Card.png",
+            title: "Platinum Rewards Credit Card",
+            desc: "Earn reward points on every purchase, with exclusive dining and travel offers.",
+            features: [
+                "5x points on dining & travel",
+                "No annual fee for first year",
+                "Global acceptance",
+                "Contactless payments"
+            ]
+        },
+        "Cashback Credit Card": {
+            img: "images/Cashback Credit Card.png",
+            title: "Cashback Credit Card",
+            desc: "Get instant cashback on groceries, fuel, and online shopping.",
+            features: [
+                "Up to 5% cashback on spends",
+                "Fuel surcharge waiver",
+                "EMI conversion on big purchases",
+                "24/7 customer support"
+            ]
+        },
+        "Travel Elite Credit Card": {
+            img: "images/Travel Elite Credit Card.png",
+            title: "Travel Elite Credit Card",
+            desc: "Perfect for frequent travelers with free travel insurance and global lounge access.",
+            features: [
+                "Complimentary lounge access",
+                "Travel insurance up to ₹10 lakh",
+                "Low forex markup",
+                "Reward points on travel bookings"
+            ]
+        },
+        "Classic Debit Card": {
+            img: "images/Classic Debit Card.png",
+            title: "Classic Debit Card",
+            desc: "Easy access to your savings with global ATM withdrawals and contactless payments.",
+            features: [
+                "Accepted at all ATMs",
+                "Daily shopping limits",
+                "SMS alerts for transactions",
+                "Contactless enabled"
+            ]
+        },
+        "Premium Debit Card": {
+            img: "images/Premium Debit Card.png",
+            title: "Premium Debit Card",
+            desc: "Enjoy higher withdrawal limits and exclusive shopping discounts.",
+            features: [
+                "Higher ATM withdrawal limits",
+                "Exclusive merchant offers",
+                "Priority customer service",
+                "Insurance cover"
+            ]
+        },
+        "Youth Debit Card": {
+            img: "images/Youth Debit Card.png",
+            title: "Youth Debit Card",
+            desc: "Specially designed for students and young adults with zero annual fees.",
+            features: [
+                "Zero annual fee",
+                "Parental control features",
+                "Cashback on select spends",
+                "Mobile banking enabled"
+            ]
+        }
+    };
+
     document.querySelectorAll('.view-details-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             const cardName = btn.getAttribute('data-product');
             handleCardView(cardName);
+
+            // Modal logic
+            const modal = document.getElementById('product-modal');
+            const details = cardDetails[cardName];
+            if (modal && details) {
+                document.getElementById('modal-img').src = details.img;
+                document.getElementById('modal-img').alt = details.title;
+                document.getElementById('modal-title').textContent = details.title;
+                document.getElementById('modal-desc').textContent = details.desc;
+                const featuresList = document.getElementById('modal-features');
+                featuresList.innerHTML = "";
+                details.features.forEach(f => {
+                    const li = document.createElement('li');
+                    li.textContent = f;
+                    featuresList.appendChild(li);
+                });
+                modal.style.display = "flex";
+                log("Modal opened for card:", cardName);
+            }
         });
+    });
+
+    // Modal close logic
+    document.querySelectorAll('.close-modal').forEach(function(closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            document.getElementById('product-modal').style.display = "none";
+            log("Modal closed.");
+        });
+    });
+
+    // Close modal on outside click
+    document.getElementById('product-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = "none";
+            log("Modal closed by clicking outside.");
+        }
     });
     // --- End Card View Tracking ---
     </script>
