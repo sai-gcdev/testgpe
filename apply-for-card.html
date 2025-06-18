@@ -278,5 +278,32 @@
     });
     // --- End Card View Tracking ---
     </script>
+    <script>
+function getQueryParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    const card = getQueryParam('card');
+    const coupon = getQueryParam('coupon');
+    if (card) {
+        const cardType = document.getElementById('card-type');
+        if (cardType) cardType.value = card;
+        // Set fee to 0 and readonly
+        const fee = document.getElementById('application-fee');
+        if (fee) {
+            fee.value = "0";
+            fee.readOnly = true;
+        }
+        // Set coupon code and readonly if supplied
+        const couponField = document.getElementById('coupon-code');
+        if (couponField && coupon) {
+            couponField.value = coupon;
+            couponField.readOnly = true;
+        }
+    }
+});
+</script>
 </body>
 </html>
