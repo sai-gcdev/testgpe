@@ -42,19 +42,19 @@
                 <img src="images/Platinum Rewards Credit Card.png" alt="Platinum Rewards Credit Card" class="card-thumb">
                 <h3>Platinum Rewards Credit Card</h3>
                 <p>Earn reward points on every purchase, with exclusive dining and travel offers.</p>
-                <button class="view-details-btn" data-product="platinum-rewards">View Details</button>
+                <button class="view-details-btn" data-product="Platinum Rewards Credit Card">View Details</button>
             </div>
             <div class="product-card">
                 <img src="images/Cashback Credit Card.png" alt="Cashback Credit Card" class="card-thumb">
                 <h3>Cashback Credit Card</h3>
                 <p>Get instant cashback on groceries, fuel, and online shopping.</p>
-                <button class="view-details-btn" data-product="cashback">View Details</button>
+                <button class="view-details-btn" data-product="Cashback Credit Card">View Details</button>
             </div>
             <div class="product-card">
                 <img src="images/Travel Elite Credit Card.png" alt="Travel Elite Credit Card" class="card-thumb">
                 <h3>Travel Elite Credit Card</h3>
                 <p>Perfect for frequent travelers with free travel insurance and global lounge access.</p>
-                <button class="view-details-btn" data-product="travel-elite">View Details</button>
+                <button class="view-details-btn" data-product="Travel Elite Credit Card">View Details</button>
             </div>
         </section>
         <section class="product-category">
@@ -63,19 +63,19 @@
                 <img src="images/Classic Debit Card.png" alt="Classic Debit Card" class="card-thumb">
                 <h3>Classic Debit Card</h3>
                 <p>Easy access to your savings with global ATM withdrawals and contactless payments.</p>
-                <button class="view-details-btn" data-product="classic-debit">View Details</button>
+                <button class="view-details-btn" data-product="Classic Debit Card">View Details</button>
             </div>
             <div class="product-card">
                 <img src="images/Premium Debit Card.png" alt="Premium Debit Card" class="card-thumb">
                 <h3>Premium Debit Card</h3>
                 <p>Enjoy higher withdrawal limits and exclusive shopping discounts.</p>
-                <button class="view-details-btn" data-product="premium-debit">View Details</button>
+                <button class="view-details-btn" data-product="Premium Debit Card">View Details</button>
             </div>
             <div class="product-card">
                 <img src="images/Youth Debit Card.png" alt="Youth Debit Card" class="card-thumb">
                 <h3>Youth Debit Card</h3>
                 <p>Specially designed for students and young adults with zero annual fees.</p>
-                <button class="view-details-btn" data-product="youth-debit">View Details</button>
+                <button class="view-details-btn" data-product="Youth Debit Card">View Details</button>
             </div>
         </section>
         <section>
@@ -216,6 +216,61 @@
         }
     });
     // --- End Search Event Tracking ---
+
+    // --- Card View Tracking for Genesys Event ---
+    function getCardViewCounts() {
+        try {
+            const data = sessionStorage.getItem("cardViewCounts");
+            return data ? JSON.parse(data) : {};
+        } catch (e) {
+            log("Error reading card view counts from sessionStorage:", e);
+            return {};
+        }
+    }
+
+    function setCardViewCounts(counts) {
+        try {
+            sessionStorage.setItem("cardViewCounts", JSON.stringify(counts));
+        } catch (e) {
+            log("Error writing card view counts to sessionStorage:", e);
+        }
+    }
+
+    function handleCardView(cardName) {
+        let counts = getCardViewCounts();
+        counts[cardName] = (counts[cardName] || 0) + 1;
+        setCardViewCounts(counts);
+        log(`Card "${cardName}" viewed. Count:`, counts[cardName]);
+        if (counts[cardName] === 3) {
+            sendGenesysCardViewedEvent(cardName, counts[cardName]);
+        }
+    }
+
+    function sendGenesysCardViewedEvent(cardName, count) {
+        if (typeof Genesys === "function") {
+            log(`Sending Genesys event: card_viewed_3_times for "${cardName}"`);
+            Genesys("command", "Journey.record", {
+                eventName: "card_viewed_3_times",
+                customAttributes: {
+                    cardName: cardName,
+                    viewCount: count
+                },
+                traitsMapper: []
+            });
+            log("Genesys card_viewed_3_times event sent for:", cardName);
+        } else {
+            log("Genesys not available, card_viewed_3_times event not sent.");
+        }
+    }
+
+    // Attach event listeners to all view-details-btn buttons
+    document.querySelectorAll('.view-details-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const cardName = btn.getAttribute('data-product');
+            handleCardView(cardName);
+        });
+    });
+    // --- End Card View Tracking ---
     </script>
 </body>
 </html>
